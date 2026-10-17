@@ -46,8 +46,14 @@ export default async function HomePage() {
 
           <div className="flex items-center gap-3">
             <Link
+              href="/design-system"
+              className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-xs font-semibold text-slate-700 transition-colors shadow-2xs"
+            >
+              <span>Design System</span>
+            </Link>
+            <Link
               href="/login"
-              className="px-4 py-2 text-sm font-semibold text-slate-700 hover:text-emerald-700 transition-colors"
+              className="px-3.5 py-2 text-sm font-semibold text-slate-700 hover:text-emerald-700 transition-colors"
             >
               Masuk
             </Link>
