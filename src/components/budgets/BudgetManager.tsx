@@ -150,17 +150,17 @@ export function BudgetManager({
     <>
       <div className="space-y-6">
         {/* Month & Year Filter Bar */}
-        <div className="card-fintrack p-5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-          <div className="flex items-center gap-3">
-            <div className="flex items-center gap-2">
-              <Calendar className="w-5 h-5 text-emerald-600" />
-              <span className="font-bold text-slate-800 text-sm">Periode:</span>
+        <div className="card-fintrack p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          <div className="flex flex-wrap items-center gap-2.5">
+            <div className="flex items-center gap-1.5 mr-1">
+              <Calendar className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+              <span className="font-bold text-slate-800 dark:text-slate-200 text-xs sm:text-sm">Periode:</span>
             </div>
 
             <select
               value={month}
               onChange={(e) => handlePeriodChange(Number(e.target.value), year)}
-              className="px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-emerald-600/30"
+              className="flex-1 sm:flex-initial px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs sm:text-sm font-semibold text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-600/30"
             >
               {INDONESIAN_MONTHS.map((m, idx) => (
                 <option key={idx + 1} value={idx + 1}>
@@ -172,7 +172,7 @@ export function BudgetManager({
             <select
               value={year}
               onChange={(e) => handlePeriodChange(month, Number(e.target.value))}
-              className="px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-emerald-600/30"
+              className="px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs sm:text-sm font-semibold text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-600/30"
             >
               {[2024, 2025, 2026, 2027].map((y) => (
                 <option key={y} value={y}>
@@ -184,7 +184,7 @@ export function BudgetManager({
 
           <button
             onClick={handleOpenAdd}
-            className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-sm shadow-xs transition-all cursor-pointer"
+            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-sm shadow-xs transition-all cursor-pointer"
           >
             <Plus className="w-4 h-4 stroke-[2.5]" />
             <span>Pasang Anggaran Kategori</span>

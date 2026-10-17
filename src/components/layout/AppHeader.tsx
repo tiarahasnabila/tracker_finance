@@ -35,19 +35,19 @@ export function AppHeader({ title, subtitle, categories }: AppHeaderProps) {
             <Calendar className="w-3.5 h-3.5 text-emerald-600" />
             <span className="capitalize">{todayStr}</span>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900">
+          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900 dark:text-slate-100">
             {title}
           </h1>
           {subtitle && (
-            <p className="text-sm text-slate-500 mt-1">{subtitle}</p>
+            <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">{subtitle}</p>
           )}
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3 w-full sm:w-auto justify-between sm:justify-end">
           <ThemeToggle />
           <button
             onClick={() => setModalOpen(true)}
-            className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white font-medium text-sm shadow-sm shadow-emerald-700/20 hover:shadow-md transition-all active:scale-95 cursor-pointer"
+            className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white font-medium text-sm shadow-sm shadow-emerald-700/20 hover:shadow-md transition-all active:scale-95 cursor-pointer"
           >
             <Plus className="w-4 h-4 stroke-[2.5]" />
             <span>Catat Transaksi</span>

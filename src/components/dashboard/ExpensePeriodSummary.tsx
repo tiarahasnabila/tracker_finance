@@ -139,18 +139,18 @@ export function ExpensePeriodSummary({
   return (
     <div className="card-fintrack p-6 mb-8">
       {/* Header & Tab Selector */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6 pb-4 border-b border-slate-100">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6 pb-4 border-b border-slate-100 dark:border-slate-800">
         <div>
-          <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-emerald-700 mb-1">
+          <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-emerald-700 dark:text-emerald-400 mb-1">
             <CalendarRange className="w-4 h-4" />
             <span>Analisis Berkala Pengeluaran</span>
           </div>
-          <h2 className="text-lg font-bold text-slate-900">
+          <h2 className="text-lg font-bold text-slate-900 dark:text-slate-100">
             {activeTab === "weekly"
               ? `Pengeluaran Tiap Pekan (${currentMonthName})`
               : "Riwayat Pengeluaran Tiap Bulan"}
           </h2>
-          <p className="text-xs text-slate-400">
+          <p className="text-xs text-slate-400 dark:text-slate-500">
             {activeTab === "weekly"
               ? "Distribusi belanja Anda terbagi ke dalam siklus 4-5 pekan per bulan"
               : "Tren historis fluktuasi pengeluaran per bulan selama beberapa periode terakhir"}
@@ -158,13 +158,13 @@ export function ExpensePeriodSummary({
         </div>
 
         {/* Tab Buttons */}
-        <div className="flex items-center gap-1.5 p-1 bg-slate-100 rounded-xl self-start sm:self-auto">
+        <div className="flex items-center gap-1.5 p-1 bg-slate-100 dark:bg-slate-800 rounded-xl self-start sm:self-auto">
           <button
             onClick={() => setActiveTab("weekly")}
             className={`px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
               activeTab === "weekly"
-                ? "bg-white text-emerald-800 shadow-xs"
-                : "text-slate-500 hover:text-slate-800"
+                ? "bg-white dark:bg-slate-700 text-emerald-800 dark:text-emerald-300 shadow-xs"
+                : "text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200"
             }`}
           >
             Tiap Pekan (Mingguan)
@@ -173,8 +173,8 @@ export function ExpensePeriodSummary({
             onClick={() => setActiveTab("monthly")}
             className={`px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
               activeTab === "monthly"
-                ? "bg-white text-emerald-800 shadow-xs"
-                : "text-slate-500 hover:text-slate-800"
+                ? "bg-white dark:bg-slate-700 text-emerald-800 dark:text-emerald-300 shadow-xs"
+                : "text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200"
             }`}
           >
             Tiap Bulan (Bulanan)
@@ -184,17 +184,17 @@ export function ExpensePeriodSummary({
 
       {/* Dynamic Narrative Summary Box (Kata-kata Insight Cerdas FinTrack) */}
       <div
-        className={`p-4 rounded-2xl mb-6 border transition-all ${
+        className={`p-4 sm:p-5 rounded-2xl mb-6 border transition-all ${
           activeTab === "weekly"
-            ? "bg-gradient-to-r from-emerald-50/80 via-teal-50/50 to-slate-50 border-emerald-200/70"
+            ? "bg-emerald-50/80 dark:bg-emerald-950/30 border-emerald-200/80 dark:border-emerald-800/40"
             : monthlyNarrative.tone === "warning"
-            ? "bg-gradient-to-r from-amber-50/80 via-orange-50/50 to-slate-50 border-amber-200/70"
-            : "bg-gradient-to-r from-emerald-50/80 via-teal-50/50 to-slate-50 border-emerald-200/70"
+            ? "bg-amber-50/80 dark:bg-amber-950/30 border-amber-200/80 dark:border-amber-800/40"
+            : "bg-emerald-50/80 dark:bg-emerald-950/30 border-emerald-200/80 dark:border-emerald-800/40"
         }`}
       >
-        <div className="flex items-start gap-3">
+        <div className="flex items-start gap-3.5">
           <div
-            className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 shadow-xs ${
+            className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 shadow-xs ${
               activeTab === "weekly"
                 ? "bg-emerald-600 text-white"
                 : monthlyNarrative.tone === "warning"
@@ -202,19 +202,25 @@ export function ExpensePeriodSummary({
                 : "bg-teal-600 text-white"
             }`}
           >
-            <Lightbulb className="w-5 h-5" />
+            <Lightbulb className="w-5 h-5 stroke-[2.2]" />
           </div>
           <div className="flex-1 min-w-0">
-            <div className="flex items-center gap-2 mb-1">
-              <span className="text-xs font-extrabold uppercase tracking-wide text-slate-800">
+            <div className="flex flex-wrap items-center gap-2 mb-1.5">
+              <span className={`text-xs font-bold uppercase tracking-wider ${
+                activeTab === "weekly"
+                  ? "text-emerald-900 dark:text-emerald-300"
+                  : monthlyNarrative.tone === "warning"
+                  ? "text-amber-900 dark:text-amber-300"
+                  : "text-teal-900 dark:text-teal-300"
+              }`}>
                 {activeTab === "weekly" ? weeklyNarrative.title : monthlyNarrative.title}
               </span>
-              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-white text-emerald-800 border border-emerald-200/60 shadow-2xs">
-                <Sparkles className="w-3 h-3 text-emerald-600" />
+              <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-white dark:bg-slate-800 text-emerald-800 dark:text-emerald-300 border border-emerald-200/70 dark:border-emerald-700/50 shadow-2xs">
+                <Sparkles className="w-3 h-3 text-emerald-600 dark:text-emerald-400" />
                 <span>Insight FinTrack</span>
               </span>
             </div>
-            <p className="text-xs text-slate-700 leading-relaxed font-medium">
+            <p className="text-xs sm:text-sm text-slate-800 dark:text-slate-200 leading-relaxed font-medium">
               {activeTab === "weekly" ? weeklyNarrative.text : monthlyNarrative.text}
             </p>
           </div>
@@ -226,34 +232,34 @@ export function ExpensePeriodSummary({
         <div className="space-y-6">
           {/* Quick Metrics Bar */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-            <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-100">
-              <span className="text-[11px] font-bold text-slate-400 uppercase">
+            <div className="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-900/60 border border-slate-100 dark:border-slate-800">
+              <span className="text-[11px] font-bold text-slate-400 dark:text-slate-500 uppercase">
                 Rata-rata / Pekan
               </span>
-              <p className="text-lg font-extrabold text-slate-800 mt-0.5">
+              <p className="text-lg font-extrabold text-slate-800 dark:text-slate-100 mt-0.5">
                 {formatRupiah(avgWeeklyExpense)}
               </p>
             </div>
 
-            <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-100">
-              <span className="text-[11px] font-bold text-slate-400 uppercase">
+            <div className="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-900/60 border border-slate-100 dark:border-slate-800">
+              <span className="text-[11px] font-bold text-slate-400 dark:text-slate-500 uppercase">
                 Pekan Pengeluaran Tertinggi
               </span>
-              <p className="text-lg font-extrabold text-rose-600 mt-0.5">
+              <p className="text-lg font-extrabold text-rose-600 dark:text-rose-400 mt-0.5">
                 {maxWeek && maxWeek.totalExpense > 0 ? maxWeek.label : "Belum ada data"}
               </p>
               {maxWeek && maxWeek.totalExpense > 0 && (
-                <span className="text-[11px] text-slate-400">
+                <span className="text-[11px] text-slate-400 dark:text-slate-500">
                   {formatRupiah(maxWeek.totalExpense)}
                 </span>
               )}
             </div>
 
-            <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-100">
-              <span className="text-[11px] font-bold text-slate-400 uppercase">
+            <div className="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-900/60 border border-slate-100 dark:border-slate-800">
+              <span className="text-[11px] font-bold text-slate-400 dark:text-slate-500 uppercase">
                 Total Belanja Bulan Ini
               </span>
-              <p className="text-lg font-extrabold text-slate-900 mt-0.5">
+              <p className="text-lg font-extrabold text-slate-900 dark:text-slate-100 mt-0.5">
                 {formatRupiah(totalWeeklyExpense)}
               </p>
             </div>
@@ -273,31 +279,31 @@ export function ExpensePeriodSummary({
                   key={week.weekNumber}
                   className={`p-4 rounded-2xl border transition-all ${
                     isMax
-                      ? "bg-rose-50/40 border-rose-200/80 shadow-xs"
-                      : "bg-white border-slate-200/80"
+                      ? "bg-rose-50/50 dark:bg-rose-950/30 border-rose-200 dark:border-rose-900/60 shadow-xs"
+                      : "bg-white dark:bg-slate-900 border-slate-200/80 dark:border-slate-800"
                   }`}
                 >
                   <div className="flex items-center justify-between mb-2">
-                    <span className="text-xs font-bold text-slate-700">
+                    <span className="text-xs font-bold text-slate-700 dark:text-slate-200">
                       {week.label}
                     </span>
                     <span
                       className={`px-2 py-0.5 text-[10px] font-extrabold rounded-full ${
                         isMax
-                          ? "bg-rose-100 text-rose-700"
-                          : "bg-slate-100 text-slate-600"
+                          ? "bg-rose-100 dark:bg-rose-900/50 text-rose-700 dark:text-rose-300"
+                          : "bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400"
                       }`}
                     >
                       {percent}%
                     </span>
                   </div>
 
-                  <p className="text-xl font-extrabold text-slate-900 mb-2">
+                  <p className="text-xl font-extrabold text-slate-900 dark:text-slate-100 mb-2">
                     {formatRupiah(week.totalExpense)}
                   </p>
 
                   {/* Progress bar */}
-                  <div className="w-full bg-slate-100 rounded-full h-2 mb-2 overflow-hidden">
+                  <div className="w-full bg-slate-100 dark:bg-slate-800 rounded-full h-2 mb-2 overflow-hidden">
                     <div
                       className={`h-full rounded-full ${
                         isMax ? "bg-rose-500" : "bg-emerald-500"
@@ -306,7 +312,7 @@ export function ExpensePeriodSummary({
                     />
                   </div>
 
-                  <p className="text-[11px] text-slate-400">
+                  <p className="text-[11px] text-slate-400 dark:text-slate-500">
                     {week.transactionCount} transaksi tercatat
                   </p>
                 </div>
@@ -324,10 +330,10 @@ export function ExpensePeriodSummary({
             <div className="lg:col-span-2 h-64 w-full">
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={monthlyData} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
-                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
-                  <XAxis dataKey="monthName" tick={{ fill: "#64748b", fontSize: 11 }} />
+                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#334155" opacity={0.3} />
+                  <XAxis dataKey="monthName" tick={{ fill: "#94a3b8", fontSize: 11 }} />
                   <YAxis
-                    tick={{ fill: "#64748b", fontSize: 11 }}
+                    tick={{ fill: "#94a3b8", fontSize: 11 }}
                     tickFormatter={(val) =>
                       val >= 1000000
                         ? `${(val / 1000000).toFixed(1)}jt`
@@ -338,7 +344,7 @@ export function ExpensePeriodSummary({
                   />
                   <Tooltip
                     formatter={(val: any) => [formatRupiah(Number(val)), "Total Pengeluaran"]}
-                    contentStyle={{ borderRadius: "0.75rem", fontSize: "12px" }}
+                    contentStyle={{ borderRadius: "0.75rem", fontSize: "12px", backgroundColor: "#0f172a", borderColor: "#334155", color: "#f8fafc" }}
                   />
                   <Bar
                     dataKey="totalExpense"
@@ -353,7 +359,7 @@ export function ExpensePeriodSummary({
 
             {/* Riwayat Tabel Sederhana */}
             <div className="space-y-2.5 max-h-64 overflow-y-auto pr-1">
-              <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">
+              <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 mb-2">
                 Riwayat Nominal Bulanan
               </h4>
               {monthlyData.map((item, idx) => {
@@ -363,11 +369,11 @@ export function ExpensePeriodSummary({
                 return (
                   <div
                     key={idx}
-                    className="p-3 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-between"
+                    className="p-3 rounded-xl bg-slate-50 dark:bg-slate-900/60 border border-slate-100 dark:border-slate-800 flex items-center justify-between"
                   >
                     <div>
-                      <p className="text-xs font-bold text-slate-800">{item.monthName}</p>
-                      <p className="text-sm font-extrabold text-rose-600 mt-0.5">
+                      <p className="text-xs font-bold text-slate-800 dark:text-slate-200">{item.monthName}</p>
+                      <p className="text-sm font-extrabold text-rose-600 dark:text-rose-400 mt-0.5">
                         {formatRupiah(item.totalExpense)}
                       </p>
                     </div>
@@ -376,8 +382,8 @@ export function ExpensePeriodSummary({
                       <div
                         className={`flex items-center gap-0.5 text-xs font-bold px-2 py-1 rounded-lg ${
                           isIncreased
-                            ? "bg-rose-50 text-rose-600"
-                            : "bg-emerald-50 text-emerald-700"
+                            ? "bg-rose-50 dark:bg-rose-950/50 text-rose-600 dark:text-rose-400"
+                            : "bg-emerald-50 dark:bg-emerald-950/50 text-emerald-700 dark:text-emerald-400"
                         }`}
                       >
                         {isIncreased ? (

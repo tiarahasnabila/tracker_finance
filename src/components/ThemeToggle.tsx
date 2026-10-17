@@ -9,21 +9,42 @@ export function ThemeToggle({ className = "" }: { className?: string }) {
 
   useEffect(() => {
     setMounted(true);
-    const saved = localStorage.getItem("fintrack_theme") as "light" | "dark" | null;
-    if (saved) {
-      setTheme(saved);
-      document.documentElement.classList.toggle("dark", saved === "dark");
-    } else if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
-      setTheme("dark");
-      document.documentElement.classList.add("dark");
-    }
+    try {
+      const saved = localStorage.getItem("fintrack_theme");
+      const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+      const isDark = saved === "dark" || (!saved && prefersDark);
+      const currentTheme = isDark ? "dark" : "light";
+      
+      setTheme(currentTheme);
+      if (isDark) {
+        document.documentElement.classList.add("dark");
+        document.documentElement.setAttribute("data-theme", "dark");
+      } else {
+        document.documentElement.classList.remove("dark");
+        document.documentElement.setAttribute("data-theme", "light");
+      }
+    } catch (_) {}
   }, []);
 
   const toggleTheme = () => {
-    const nextTheme = theme === "light" ? "dark" : "light";
+    const isCurrentlyDark =
+      document.documentElement.classList.contains("dark") ||
+      document.documentElement.getAttribute("data-theme") === "dark";
+
+    const nextTheme = isCurrentlyDark ? "light" : "dark";
     setTheme(nextTheme);
-    localStorage.setItem("fintrack_theme", nextTheme);
-    document.documentElement.classList.toggle("dark", nextTheme === "dark");
+
+    try {
+      localStorage.setItem("fintrack_theme", nextTheme);
+    } catch (_) {}
+
+    if (nextTheme === "dark") {
+      document.documentElement.classList.add("dark");
+      document.documentElement.setAttribute("data-theme", "dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+      document.documentElement.setAttribute("data-theme", "light");
+    }
   };
 
   if (!mounted) {
@@ -36,7 +57,7 @@ export function ThemeToggle({ className = "" }: { className?: string }) {
     <button
       onClick={toggleTheme}
       type="button"
-      className={`p-2 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-300 hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-slate-50 dark:hover:bg-slate-800/80 transition-all shadow-xs flex items-center justify-center cursor-pointer ${className}`}
+      className={`p-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-200 hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-slate-50 dark:hover:bg-slate-700 transition-all shadow-xs flex items-center justify-center cursor-pointer ${className}`}
       title={theme === "light" ? "Beralih ke Mode Gelap" : "Beralih ke Mode Terang"}
       aria-label="Toggle dark mode"
     >

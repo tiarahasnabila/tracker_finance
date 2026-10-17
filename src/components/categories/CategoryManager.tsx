@@ -147,35 +147,35 @@ export function CategoryManager({ categories }: CategoryManagerProps) {
     <>
       <div className="space-y-6">
         {/* Header Tabs & Add Button */}
-        <div className="card-fintrack p-5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-          <div className="flex items-center gap-2 p-1 bg-slate-100 rounded-xl">
+        <div className="card-fintrack p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          <div className="grid grid-cols-2 sm:flex sm:items-center gap-1.5 p-1 bg-slate-100 dark:bg-slate-800 rounded-xl">
             <button
               onClick={() => setActiveTab("EXPENSE")}
-              className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold transition-all ${
+              className={`flex items-center justify-center gap-2 px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold transition-all ${
                 activeTab === "EXPENSE"
-                  ? "bg-white text-rose-600 shadow-xs"
-                  : "text-slate-500 hover:text-slate-800"
+                  ? "bg-white dark:bg-slate-700 text-rose-600 dark:text-rose-400 shadow-xs"
+                  : "text-slate-500 hover:text-slate-800 dark:hover:text-slate-200"
               }`}
             >
               <ArrowDownRight className="w-4 h-4 text-rose-500" />
-              <span>Kategori Pengeluaran</span>
+              <span>Pengeluaran</span>
             </button>
             <button
               onClick={() => setActiveTab("INCOME")}
-              className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold transition-all ${
+              className={`flex items-center justify-center gap-2 px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold transition-all ${
                 activeTab === "INCOME"
-                  ? "bg-white text-emerald-600 shadow-xs"
-                  : "text-slate-500 hover:text-slate-800"
+                  ? "bg-white dark:bg-slate-700 text-emerald-600 dark:text-emerald-400 shadow-xs"
+                  : "text-slate-500 hover:text-slate-800 dark:hover:text-slate-200"
               }`}
             >
               <ArrowUpRight className="w-4 h-4 text-emerald-500" />
-              <span>Kategori Pemasukan</span>
+              <span>Pemasukan</span>
             </button>
           </div>
 
           <button
             onClick={handleOpenAdd}
-            className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-sm shadow-xs transition-all cursor-pointer"
+            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-sm shadow-xs transition-all cursor-pointer"
           >
             <Plus className="w-4 h-4 stroke-[2.5]" />
             <span>Tambah Kategori Pribadi</span>

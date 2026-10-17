@@ -33,21 +33,30 @@ export function OverviewCards({
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
       {/* 1. Total Saldo Bersih */}
-      <div className="card-fintrack p-6 bg-gradient-to-br from-slate-950 via-slate-900 to-slate-800 text-white relative overflow-hidden shadow-xl border-slate-800">
-        <div className="absolute top-0 right-0 -mt-4 -mr-4 w-28 h-28 bg-emerald-500/20 rounded-full blur-2xl pointer-events-none" />
+      <div className={`card-fintrack p-6 border-t-4 bg-white ${
+        totalBalance >= 0 ? "border-t-emerald-500" : "border-t-rose-500"
+      }`}>
         <div className="flex items-center justify-between mb-4">
-          <span className="text-[11px] font-bold uppercase tracking-wider text-slate-300">
+          <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500">
             Total Saldo Bersih
           </span>
-          <div className="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center text-emerald-400 border border-white/10 shadow-inner">
+          <div className={`w-10 h-10 rounded-xl flex items-center justify-center shadow-xs ${
+            totalBalance >= 0
+              ? "bg-emerald-50 text-emerald-600"
+              : "bg-rose-50 text-rose-600"
+          }`}>
             <Wallet className="w-5 h-5 stroke-[2.2]" />
           </div>
         </div>
-        <p className="text-2xl sm:text-3xl font-extrabold tracking-tight text-white mb-2">
+        <p className={`text-2xl sm:text-3xl font-extrabold tracking-tight mb-2 ${
+          totalBalance >= 0 ? "text-emerald-600 dark:text-emerald-400" : "text-rose-600 dark:text-rose-400"
+        }`}>
           {formatRupiah(totalBalance)}
         </p>
-        <div className="flex items-center gap-2 text-xs text-slate-400">
-          <span className="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+        <div className="flex items-center gap-2 text-xs text-slate-400 font-medium">
+          <span className={`inline-block w-2 h-2 rounded-full ${
+            totalBalance >= 0 ? "bg-emerald-500" : "bg-rose-500"
+          } animate-pulse`} />
           <span>Akumulasi seluruh transaksi riil</span>
         </div>
       </div>

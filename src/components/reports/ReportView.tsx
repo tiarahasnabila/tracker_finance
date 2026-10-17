@@ -385,17 +385,69 @@ export function ReportView({
 
       {/* Filtered Data Table */}
       <div className="card-fintrack overflow-hidden">
-        <div className="p-4 border-b border-slate-100 bg-slate-50/50 flex items-center justify-between">
-          <h3 className="font-bold text-slate-800 text-sm">
+        <div className="p-4 border-b border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/50 flex items-center justify-between">
+          <h3 className="font-bold text-slate-800 dark:text-slate-100 text-sm">
             Daftar Transaksi Sesuai Filter ({filtered.length})
           </h3>
-          <span className="text-xs text-slate-400">Siap diekspor ke CSV</span>
+          <span className="text-xs text-slate-400 dark:text-slate-500">Siap diekspor ke PDF / CSV</span>
         </div>
 
-        <div className="overflow-x-auto">
+        {/* Mobile View: Vertical Card List (Auto kebawah, bukan kesamping) */}
+        <div className="md:hidden divide-y divide-slate-100 dark:divide-slate-800">
+          {filtered.length > 0 ? (
+            filtered.map((tx) => (
+              <div
+                key={tx.id}
+                className="p-4 hover:bg-slate-50/70 dark:hover:bg-slate-800/40 transition-colors flex flex-col gap-2.5"
+              >
+                {/* Header: Category Badge & Date */}
+                <div className="flex items-center justify-between gap-2 text-xs">
+                  <span className="text-xs font-medium text-slate-700 dark:text-slate-300 bg-slate-100 dark:bg-slate-800 px-2.5 py-1 rounded-lg">
+                    {tx.category.name}
+                  </span>
+                  <span className="text-slate-400 dark:text-slate-500 text-xs">
+                    {formatIndonesianDate(tx.date)}
+                  </span>
+                </div>
+
+                {/* Body: Title, Notes & Amount */}
+                <div className="flex items-start justify-between gap-3">
+                  <div className="min-w-0 flex-1">
+                    <p className="font-semibold text-slate-900 dark:text-slate-100 text-sm leading-snug">
+                      {tx.title}
+                    </p>
+                    {tx.notes && (
+                      <p className="text-xs text-slate-400 dark:text-slate-500 mt-1 line-clamp-2">
+                        {tx.notes}
+                      </p>
+                    )}
+                  </div>
+                  <div className="text-right shrink-0">
+                    <span
+                      className={`text-base font-bold tracking-tight ${
+                        tx.type === "INCOME"
+                          ? "text-emerald-600 dark:text-emerald-400"
+                          : "text-rose-600 dark:text-rose-400"
+                      }`}
+                    >
+                      {tx.type === "INCOME" ? "+" : "-"} {formatRupiah(tx.amount)}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            ))
+          ) : (
+            <div className="py-12 px-4 text-center text-slate-400 text-xs">
+              Tidak ada transaksi yang cocok dengan kriteria filter Anda.
+            </div>
+          )}
+        </div>
+
+        {/* Desktop View: Multi-column Table */}
+        <div className="hidden md:block overflow-x-auto">
           <table className="w-full text-left border-collapse text-sm">
             <thead>
-              <tr className="border-b border-slate-100 bg-slate-50/70 text-[11px] font-bold uppercase tracking-wider text-slate-400">
+              <tr className="border-b border-slate-100 dark:border-slate-800 bg-slate-50/70 dark:bg-slate-900/70 text-[11px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500">
                 <th className="py-3 px-5">Tanggal</th>
                 <th className="py-3 px-5">Nama Transaksi</th>
                 <th className="py-3 px-5">Kategori</th>
@@ -403,26 +455,28 @@ export function ReportView({
                 <th className="py-3 px-5 text-right">Nominal</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100">
+            <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
               {filtered.length > 0 ? (
                 filtered.map((tx) => (
-                  <tr key={tx.id} className="hover:bg-slate-50/60 transition-colors">
-                    <td className="py-3 px-5 text-xs text-slate-500 whitespace-nowrap">
+                  <tr key={tx.id} className="hover:bg-slate-50/60 dark:hover:bg-slate-800/50 transition-colors">
+                    <td className="py-3 px-5 text-xs text-slate-500 dark:text-slate-400 whitespace-nowrap">
                       {formatIndonesianDate(tx.date)}
                     </td>
-                    <td className="py-3 px-5 font-semibold text-slate-800">{tx.title}</td>
+                    <td className="py-3 px-5 font-semibold text-slate-800 dark:text-slate-100">{tx.title}</td>
                     <td className="py-3 px-5 whitespace-nowrap">
-                      <span className="text-xs font-medium text-slate-600 bg-slate-100 px-2.5 py-1 rounded-lg">
+                      <span className="text-xs font-medium text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-800 px-2.5 py-1 rounded-lg">
                         {tx.category.name}
                       </span>
                     </td>
-                    <td className="py-3 px-5 text-xs text-slate-400 max-w-[200px] truncate">
+                    <td className="py-3 px-5 text-xs text-slate-400 dark:text-slate-500 max-w-[200px] truncate">
                       {tx.notes || "-"}
                     </td>
                     <td className="py-3 px-5 text-right whitespace-nowrap">
                       <span
                         className={`font-bold ${
-                          tx.type === "INCOME" ? "text-emerald-600" : "text-rose-600"
+                          tx.type === "INCOME"
+                            ? "text-emerald-600 dark:text-emerald-400"
+                            : "text-rose-600 dark:text-rose-400"
                         }`}
                       >
                         {tx.type === "INCOME" ? "+" : "-"} {formatRupiah(tx.amount)}
