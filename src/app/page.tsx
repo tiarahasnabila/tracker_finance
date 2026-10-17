@@ -100,6 +100,17 @@ export default async function HomePage() {
               </Link>
             </div>
 
+            {/* Visual Dashboard Preview */}
+            <div className="mt-14 relative mx-auto max-w-5xl rounded-2xl md:rounded-3xl p-2 md:p-3 bg-gradient-to-b from-slate-200/80 via-slate-100/50 to-white/90 border border-slate-200 shadow-2xl">
+              <div className="overflow-hidden rounded-xl md:rounded-2xl border border-slate-200/80 bg-white">
+                <img
+                  src="/images/dashboard-preview.jpg"
+                  alt="FinTrack Financial Dashboard Preview"
+                  className="w-full h-auto object-cover transform hover:scale-[1.01] transition-transform duration-500"
+                />
+              </div>
+            </div>
+
             {/* Feature Highlights Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-20 text-left">
               <div className="card-fintrack p-6 bg-white">
