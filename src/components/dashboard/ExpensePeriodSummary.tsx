@@ -10,6 +10,8 @@ import {
   ArrowDownRight,
   AlertCircle,
   Sparkles,
+  Lightbulb,
+  CheckCircle2,
 } from "lucide-react";
 import {
   ResponsiveContainer,
@@ -62,6 +64,78 @@ export function ExpensePeriodSummary({
     }
   });
 
+  // Narasi cerdas untuk pengeluaran mingguan
+  const getWeeklyNarrative = () => {
+    if (totalWeeklyExpense === 0) {
+      return {
+        title: "Belum Ada Pengeluaran",
+        text: `Belum ada data pengeluaran yang tercatat pada bulan ${currentMonthName}. Catat transaksi pertama Anda untuk melihat evaluasi distribusi pekanan secara otomatis.`,
+        tone: "neutral",
+      };
+    }
+
+    const maxPercent = maxWeek ? Math.round((maxWeek.totalExpense / totalWeeklyExpense) * 100) : 0;
+
+    let advice = "";
+    if (maxPercent >= 50) {
+      advice = `Pengeluaran Anda terkonsentrasi sangat besar di ${maxWeek.label} (${maxPercent}% dari seluruh pengeluaran bulan ini). Hal ini wajar apabila bertepatan dengan kewajiban rutin awal bulan seperti sewa tempat tinggal atau belanja pokok. Di pekan-pekan berikutnya, pertahankan belanja harian tetap disiplin.`;
+    } else {
+      advice = `Distribusi pengeluaran Anda antar-pekan tergolong seimbang dan merata dengan rata-rata ${formatRupiah(avgWeeklyExpense)} per pekan. Pola konsistensi ini sangat baik untuk stabilitas arus kas!`;
+    }
+
+    return {
+      title: `Evaluasi Belanja Mingguan (${currentMonthName})`,
+      text: `Total belanja bulan ini tercatat sebesar ${formatRupiah(totalWeeklyExpense)}. Puncak pengeluaran terjadi pada ${maxWeek?.label} sebesar ${formatRupiah(maxWeek?.totalExpense || 0)} (${maxPercent}% porsi). ${advice}`,
+      tone: "positive",
+    };
+  };
+
+  // Narasi cerdas untuk pengeluaran bulanan
+  const getMonthlyNarrative = () => {
+    if (monthlyData.length < 2) {
+      return {
+        title: "Riwayat Bulanan Terus Bertumbuh",
+        text: `Data riwayat bulanan akan semakin lengkap seiring berjalannya pencatatan transaksi Anda dari bulan ke bulan. Terus pertahankan kedisiplinan mencatat!`,
+        tone: "neutral",
+      };
+    }
+
+    const currentMonthData = monthlyData[monthlyData.length - 1];
+    const prevMonthData = monthlyData[monthlyData.length - 2];
+    const change = currentMonthData.percentageChange;
+
+    if (change === undefined) {
+      return {
+        title: "Ringkasan Riwayat Pengeluaran",
+        text: `Total pengeluaran tercatat di ${currentMonthData.monthName} adalah ${formatRupiah(currentMonthData.totalExpense)}. Data siap dibandingkan di bulan berikutnya.`,
+        tone: "neutral",
+      };
+    }
+
+    if (change < 0) {
+      return {
+        title: "Tren Positif: Penurunan Pengeluaran!",
+        text: `Kabar baik! Pengeluaran Anda di ${currentMonthData.monthName} berhasil ditekan turun sebesar ${Math.abs(change)}% dibandingkan ${prevMonthData.monthName} (dari ${formatRupiah(prevMonthData.totalExpense)} menjadi ${formatRupiah(currentMonthData.totalExpense)}). Strategi efisiensi anggaran Anda berjalan sangat sukses! 🎉`,
+        tone: "positive",
+      };
+    } else if (change > 0) {
+      return {
+        title: "Peringatan Kenaikan Belanja",
+        text: `Pengeluaran di ${currentMonthData.monthName} mengalami kenaikan sebesar ${change}% dibandingkan ${prevMonthData.monthName} (dari ${formatRupiah(prevMonthData.totalExpense)} menjadi ${formatRupiah(currentMonthData.totalExpense)}). Periksa kembali kategori pengeluaran terbesar untuk memastikan arus kas tetap aman.`,
+        tone: "warning",
+      };
+    } else {
+      return {
+        title: "Pengeluaran Konsisten & Stabil",
+        text: `Pengeluaran Anda di ${currentMonthData.monthName} stabil sama persis dengan ${prevMonthData.monthName} sebesar ${formatRupiah(currentMonthData.totalExpense)}. Kedisiplinan anggaran Anda terjaga rapi!`,
+        tone: "positive",
+      };
+    }
+  };
+
+  const weeklyNarrative = getWeeklyNarrative();
+  const monthlyNarrative = getMonthlyNarrative();
+
   return (
     <div className="card-fintrack p-6 mb-8">
       {/* Header & Tab Selector */}
@@ -87,7 +161,7 @@ export function ExpensePeriodSummary({
         <div className="flex items-center gap-1.5 p-1 bg-slate-100 rounded-xl self-start sm:self-auto">
           <button
             onClick={() => setActiveTab("weekly")}
-            className={`px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all ${
+            className={`px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
               activeTab === "weekly"
                 ? "bg-white text-emerald-800 shadow-xs"
                 : "text-slate-500 hover:text-slate-800"
@@ -97,7 +171,7 @@ export function ExpensePeriodSummary({
           </button>
           <button
             onClick={() => setActiveTab("monthly")}
-            className={`px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all ${
+            className={`px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
               activeTab === "monthly"
                 ? "bg-white text-emerald-800 shadow-xs"
                 : "text-slate-500 hover:text-slate-800"
@@ -105,6 +179,45 @@ export function ExpensePeriodSummary({
           >
             Tiap Bulan (Bulanan)
           </button>
+        </div>
+      </div>
+
+      {/* Dynamic Narrative Summary Box (Kata-kata Insight Cerdas FinTrack) */}
+      <div
+        className={`p-4 rounded-2xl mb-6 border transition-all ${
+          activeTab === "weekly"
+            ? "bg-gradient-to-r from-emerald-50/80 via-teal-50/50 to-slate-50 border-emerald-200/70"
+            : monthlyNarrative.tone === "warning"
+            ? "bg-gradient-to-r from-amber-50/80 via-orange-50/50 to-slate-50 border-amber-200/70"
+            : "bg-gradient-to-r from-emerald-50/80 via-teal-50/50 to-slate-50 border-emerald-200/70"
+        }`}
+      >
+        <div className="flex items-start gap-3">
+          <div
+            className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 shadow-xs ${
+              activeTab === "weekly"
+                ? "bg-emerald-600 text-white"
+                : monthlyNarrative.tone === "warning"
+                ? "bg-amber-600 text-white"
+                : "bg-teal-600 text-white"
+            }`}
+          >
+            <Lightbulb className="w-5 h-5" />
+          </div>
+          <div className="flex-1 min-w-0">
+            <div className="flex items-center gap-2 mb-1">
+              <span className="text-xs font-extrabold uppercase tracking-wide text-slate-800">
+                {activeTab === "weekly" ? weeklyNarrative.title : monthlyNarrative.title}
+              </span>
+              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-white text-emerald-800 border border-emerald-200/60 shadow-2xs">
+                <Sparkles className="w-3 h-3 text-emerald-600" />
+                <span>Insight FinTrack</span>
+              </span>
+            </div>
+            <p className="text-xs text-slate-700 leading-relaxed font-medium">
+              {activeTab === "weekly" ? weeklyNarrative.text : monthlyNarrative.text}
+            </p>
+          </div>
         </div>
       </div>
 
