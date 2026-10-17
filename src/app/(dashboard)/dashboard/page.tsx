@@ -7,6 +7,7 @@ import { OverviewCards } from "@/components/dashboard/OverviewCards";
 import { FinanceCharts } from "@/components/dashboard/FinanceCharts";
 import { RecentTransactions } from "@/components/dashboard/RecentTransactions";
 import { BudgetProgressList } from "@/components/dashboard/BudgetProgressList";
+import { ExpensePeriodSummary } from "@/components/dashboard/ExpensePeriodSummary";
 
 export const metadata: Metadata = {
   title: "Dashboard",
@@ -173,7 +174,63 @@ export default async function DashboardPage(props: DashboardPageProps) {
     });
   }
 
-  // 6. Recent Transactions (latest 5)
+  // 6. Hitung Pengeluaran Mingguan (Weekly Expense Breakdown)
+  const weeklyExpenses = [
+    {
+      weekNumber: 1,
+      label: "Pekan 1 (Tgl 1 - 7)",
+      totalExpense: periodTransactions
+        .filter((t) => t.type === "EXPENSE" && t.date.getDate() >= 1 && t.date.getDate() <= 7)
+        .reduce((acc, curr) => acc + toNumber(curr.amount), 0),
+      transactionCount: periodTransactions.filter(
+        (t) => t.type === "EXPENSE" && t.date.getDate() >= 1 && t.date.getDate() <= 7
+      ).length,
+    },
+    {
+      weekNumber: 2,
+      label: "Pekan 2 (Tgl 8 - 14)",
+      totalExpense: periodTransactions
+        .filter((t) => t.type === "EXPENSE" && t.date.getDate() >= 8 && t.date.getDate() <= 14)
+        .reduce((acc, curr) => acc + toNumber(curr.amount), 0),
+      transactionCount: periodTransactions.filter(
+        (t) => t.type === "EXPENSE" && t.date.getDate() >= 8 && t.date.getDate() <= 14
+      ).length,
+    },
+    {
+      weekNumber: 3,
+      label: "Pekan 3 (Tgl 15 - 21)",
+      totalExpense: periodTransactions
+        .filter((t) => t.type === "EXPENSE" && t.date.getDate() >= 15 && t.date.getDate() <= 21)
+        .reduce((acc, curr) => acc + toNumber(curr.amount), 0),
+      transactionCount: periodTransactions.filter(
+        (t) => t.type === "EXPENSE" && t.date.getDate() >= 15 && t.date.getDate() <= 21
+      ).length,
+    },
+    {
+      weekNumber: 4,
+      label: "Pekan 4 & 5 (Tgl 22+)",
+      totalExpense: periodTransactions
+        .filter((t) => t.type === "EXPENSE" && t.date.getDate() >= 22)
+        .reduce((acc, curr) => acc + toNumber(curr.amount), 0),
+      transactionCount: periodTransactions.filter(
+        (t) => t.type === "EXPENSE" && t.date.getDate() >= 22
+      ).length,
+    },
+  ];
+
+  // 7. Hitung Riwayat Pengeluaran Bulanan (Monthly Expense History)
+  const monthlyExpenses = monthlyComparison.map((m, idx) => {
+    const prev = idx > 0 ? monthlyComparison[idx - 1].pengeluaran : 0;
+    const change = prev > 0 ? Math.round(((m.pengeluaran - prev) / prev) * 100) : 0;
+    return {
+      monthName: m.month,
+      year: currentYear,
+      totalExpense: m.pengeluaran,
+      percentageChange: idx > 0 ? change : undefined,
+    };
+  });
+
+  // 8. Recent Transactions (latest 5)
   const recentTransactions = await prisma.transaction.findMany({
     where: { userId: user.id },
     take: 5,
@@ -196,7 +253,7 @@ export default async function DashboardPage(props: DashboardPageProps) {
     },
   }));
 
-  // 7. Categories for quick transaction modal
+  // 9. Categories for quick transaction modal
   const categories = await prisma.category.findMany({
     where: {
       OR: [{ isSystem: true }, { userId: user.id }],
@@ -227,6 +284,13 @@ export default async function DashboardPage(props: DashboardPageProps) {
         totalExpense={periodExpense}
         totalBudget={totalBudget}
         remainingBudget={remainingBudget}
+      />
+
+      {/* Fitur Baru: Ringkasan Pengeluaran Mingguan & Bulanan */}
+      <ExpensePeriodSummary
+        currentMonthName={`${INDONESIAN_MONTHS[currentMonth - 1]} ${currentYear}`}
+        weeklyData={weeklyExpenses}
+        monthlyData={monthlyExpenses}
       />
 
       {/* Analytics Charts */}
