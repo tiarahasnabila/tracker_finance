@@ -10,6 +10,7 @@ import {
   TrendingUp,
   Receipt,
   FileSpreadsheet,
+  FileText,
 } from "lucide-react";
 import {
   ResponsiveContainer,
@@ -25,6 +26,7 @@ import {
 } from "recharts";
 import { CategoryIcon } from "@/components/CategoryIcon";
 import { formatRupiah, formatIndonesianDate, toInputDate } from "@/lib/formatters";
+import { exportTransactionsToPdf } from "@/lib/pdfExport";
 
 interface CategoryOption {
   id: string;
@@ -154,6 +156,17 @@ export function ReportView({
     window.open(`/api/export/csv?${params.toString()}`, "_blank");
   };
 
+  const handleExportPdf = () => {
+    exportTransactionsToPdf({
+      startDate,
+      endDate,
+      totalIncome,
+      totalExpense,
+      netBalance,
+      transactions: filtered,
+    });
+  };
+
   return (
     <div className="space-y-6">
       {/* Filter and Export Header Bar */}
@@ -164,14 +177,26 @@ export function ReportView({
             <p className="text-xs text-slate-400">Pilih periode dan kategori yang ingin dianalisis</p>
           </div>
 
-          <button
-            onClick={handleExportCsv}
-            disabled={filtered.length === 0}
-            className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-semibold text-sm shadow-xs transition-all disabled:opacity-40 cursor-pointer"
-          >
-            <Download className="w-4 h-4 stroke-[2.5]" />
-            <span>Ekspor CSV</span>
-          </button>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={handleExportPdf}
+              disabled={filtered.length === 0}
+              className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs shadow-xs transition-all disabled:opacity-40 cursor-pointer active:scale-95"
+              title="Unduh format dokumen PDF resmi siap cetak"
+            >
+              <FileText className="w-4 h-4 stroke-[2.2]" />
+              <span>Ekspor PDF</span>
+            </button>
+            <button
+              onClick={handleExportCsv}
+              disabled={filtered.length === 0}
+              className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs transition-all disabled:opacity-40 cursor-pointer"
+              title="Unduh format file spreadsheet CSV / Excel"
+            >
+              <FileSpreadsheet className="w-4 h-4 stroke-[2.2]" />
+              <span>Ekspor CSV</span>
+            </button>
+          </div>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs">
