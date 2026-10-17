@@ -16,7 +16,6 @@ import {
   Wallet,
   User as UserIcon,
   ChevronRight,
-  Palette,
 } from "lucide-react";
 import { logoutAction } from "@/app/actions/authActions";
 
@@ -36,7 +35,6 @@ const navItems = [
   { name: "Kategori", href: "/categories", icon: Tags },
   { name: "Laporan", href: "/reports", icon: FileBarChart },
   { name: "Pengaturan", href: "/settings", icon: Settings },
-  { name: "Design System", href: "/design-system", icon: Palette },
 ];
 
 export function AppSidebar({ user }: AppSidebarProps) {

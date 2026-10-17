@@ -4,18 +4,6 @@
 
 ---
 
-## 📸 Tampilan Antarmuka (UI/UX Showcase)
-
-### 🖥️ Desktop Dashboard
-![FinTrack Desktop Dashboard Preview](./public/images/dashboard-preview.jpg)
-
-### 📱 Responsive Mobile View
-<p align="center">
-  <img src="./public/images/mobile-preview.jpg" alt="FinTrack Mobile App Preview" width="360" />
-</p>
-
----
-
 ## 🌟 Fitur Utama
 
 1. **Dashboard Finansial Terpadu**
