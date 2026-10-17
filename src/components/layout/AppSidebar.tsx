@@ -16,8 +16,10 @@ import {
   Wallet,
   User as UserIcon,
   ChevronRight,
+  PanelLeftClose,
 } from "lucide-react";
 import { logoutAction } from "@/app/actions/authActions";
+import { useSidebar } from "./SidebarContext";
 
 interface AppSidebarProps {
   user: {
@@ -40,7 +42,7 @@ const navItems = [
 export function AppSidebar({ user }: AppSidebarProps) {
   const pathname = usePathname();
   const router = useRouter();
-  const [mobileOpen, setMobileOpen] = useState(false);
+  const { isSidebarHidden, toggleSidebar, mobileOpen, setMobileOpen } = useSidebar();
   const [isLoggingOut, setIsLoggingOut] = useState(false);
 
   const handleLogout = async () => {
@@ -70,13 +72,26 @@ export function AppSidebar({ user }: AppSidebarProps) {
               </span>
             </div>
           </Link>
-          <button
-            onClick={() => setMobileOpen(false)}
-            className="md:hidden p-1.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800"
-            aria-label="Tutup menu"
-          >
-            <X className="w-5 h-5" />
-          </button>
+
+          <div className="flex items-center gap-1">
+            {/* Desktop hide button */}
+            <button
+              onClick={toggleSidebar}
+              className="hidden md:flex p-1.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer"
+              title="Sembunyikan Menu Navigasi"
+              aria-label="Sembunyikan menu"
+            >
+              <PanelLeftClose className="w-4 h-4" />
+            </button>
+            {/* Mobile close button */}
+            <button
+              onClick={() => setMobileOpen(false)}
+              className="md:hidden p-1.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800"
+              aria-label="Tutup menu"
+            >
+              <X className="w-5 h-5" />
+            </button>
+          </div>
         </div>
 
         {/* Navigation Links */}
@@ -203,8 +218,12 @@ export function AppSidebar({ user }: AppSidebarProps) {
         {navContent}
       </aside>
 
-      {/* Desktop Static Sidebar */}
-      <aside className="hidden md:flex md:w-64 md:flex-col md:fixed md:inset-y-0 z-20 bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800">
+      {/* Desktop Static Sidebar with Collapse Transition */}
+      <aside
+        className={`hidden md:flex md:w-64 md:flex-col md:fixed md:inset-y-0 z-20 bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 transition-transform duration-300 ease-in-out ${
+          isSidebarHidden ? "-translate-x-full" : "translate-x-0"
+        }`}
+      >
         {navContent}
       </aside>
     </>
