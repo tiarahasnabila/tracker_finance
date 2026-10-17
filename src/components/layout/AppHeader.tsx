@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { Plus, Calendar, Bell } from "lucide-react";
 import { TransactionModal } from "@/components/transactions/TransactionModal";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 interface AppHeaderProps {
   title: string;
@@ -43,6 +44,7 @@ export function AppHeader({ title, subtitle, categories }: AppHeaderProps) {
         </div>
 
         <div className="flex items-center gap-3">
+          <ThemeToggle />
           <button
             onClick={() => setModalOpen(true)}
             className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white font-medium text-sm shadow-sm shadow-emerald-700/20 hover:shadow-md transition-all active:scale-95 cursor-pointer"

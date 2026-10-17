@@ -2,6 +2,7 @@ import { Metadata } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/lib/auth";
+import { ThemeToggle } from "@/components/ThemeToggle";
 import {
   Wallet,
   ArrowRight,
@@ -89,6 +90,7 @@ export default async function HomePage() {
 
           {/* Auth Actions */}
           <div className="flex items-center gap-2.5">
+            <ThemeToggle />
             <Link
               href="/login"
               className="px-4 py-2 text-xs font-bold text-slate-700 hover:text-emerald-700 hover:bg-slate-100/60 rounded-xl transition-all"
