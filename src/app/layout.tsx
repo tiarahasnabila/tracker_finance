@@ -13,7 +13,7 @@ export const metadata: Metadata = {
     default: "FinTrack — Personal Finance Tracker",
     template: "%s | FinTrack",
   },
-  description: "Aplikasi pengelolaan keuangan pribadi modern, elegan, dan aman dengan Next.js App Router & Neon PostgreSQL.",
+  description: "Aplikasi pengelolaan keuangan pribadi modern, elegan, dan aman untuk memantau arus kas, anggaran, dan laporan keuangan Anda.",
   icons: {
     icon: "/favicon.ico",
   },
