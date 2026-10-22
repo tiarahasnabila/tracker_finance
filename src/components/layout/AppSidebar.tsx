@@ -17,6 +17,7 @@ import {
   User as UserIcon,
   ChevronRight,
   PanelLeftClose,
+  Sparkles,
 } from "lucide-react";
 import { logoutAction } from "@/app/actions/authActions";
 import { useSidebar } from "./SidebarContext";
@@ -34,6 +35,7 @@ const navItems = [
   { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
   { name: "Transaksi", href: "/transactions", icon: ArrowLeftRight },
   { name: "Anggaran", href: "/budgets", icon: PieChart },
+  { name: "Cek Impulsif AI", href: "/anti-impulse", icon: Sparkles, badge: "AI" },
   { name: "Kategori", href: "/categories", icon: Tags },
   { name: "Laporan", href: "/reports", icon: FileBarChart },
   { name: "Pengaturan", href: "/settings", icon: Settings },
@@ -124,6 +126,11 @@ export function AppSidebar({ user }: AppSidebarProps) {
                       }`}
                     />
                     <span>{item.name}</span>
+                    {item.badge && (
+                      <span className="px-1.5 py-0.5 text-[10px] font-black uppercase rounded bg-indigo-500/15 text-indigo-600 dark:text-indigo-400 tracking-wider">
+                        {item.badge}
+                      </span>
+                    )}
                   </div>
                   {isActive && (
                     <div className="w-1.5 h-1.5 rounded-full bg-emerald-600 dark:bg-emerald-400" />

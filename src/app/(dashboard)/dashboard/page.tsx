@@ -1,4 +1,6 @@
 import { Metadata } from "next";
+import Link from "next/link";
+import { Sparkles, ArrowRight, ShieldAlert } from "lucide-react";
 import { requireAuth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { toNumber, INDONESIAN_MONTHS } from "@/lib/formatters";
@@ -285,6 +287,36 @@ export default async function DashboardPage(props: DashboardPageProps) {
         totalBudget={totalBudget}
         remainingBudget={remainingBudget}
       />
+
+      {/* AI Anti-Impulse Feature Banner */}
+      <div className="my-6 relative overflow-hidden rounded-2xl bg-gradient-to-r from-indigo-900 via-indigo-950 to-slate-900 text-white p-5 sm:p-6 shadow-md border border-indigo-800/60 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <div className="flex items-center gap-4">
+          <div className="w-12 h-12 rounded-xl bg-indigo-500/20 text-indigo-400 border border-indigo-400/30 flex items-center justify-center shrink-0">
+            <Sparkles className="w-6 h-6 animate-pulse" />
+          </div>
+          <div>
+            <div className="flex items-center gap-2">
+              <span className="text-[10px] font-extrabold tracking-wider uppercase px-2 py-0.5 rounded bg-indigo-500/30 text-indigo-300 border border-indigo-400/30">
+                Fitur Baru AI
+              </span>
+              <h3 className="text-base sm:text-lg font-bold text-white">
+                Mau Belanja Barang Impulsif? Cek Dulu di Sini!
+              </h3>
+            </div>
+            <p className="text-xs sm:text-sm text-slate-300 mt-1 max-w-xl">
+              Hitung berapa jam kerja kerasmu yang harus ditukar, periksa dampak ke sisa budget bulan ini, dan dapatkan tamparan realita dari Groq AI.
+            </p>
+          </div>
+        </div>
+
+        <Link
+          href="/anti-impulse"
+          className="shrink-0 inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white text-indigo-950 hover:bg-slate-100 font-bold text-xs sm:text-sm shadow-md transition-all group"
+        >
+          <span>Uji Rencana Belanja</span>
+          <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+        </Link>
+      </div>
 
       {/* Fitur Baru: Ringkasan Pengeluaran Mingguan & Bulanan */}
       <ExpensePeriodSummary
