@@ -5,6 +5,8 @@ import {
   transactionSchema,
   categorySchema,
   budgetSchema,
+  planSchema,
+  planItemSchema,
 } from "@/lib/validations";
 
 describe("Validation Schemas", () => {
@@ -143,6 +145,47 @@ describe("Validation Schemas", () => {
         icon: "Coffee",
       };
       expect(categorySchema.safeParse(invalid).success).toBe(false);
+    });
+  });
+
+  describe("planSchema & planItemSchema", () => {
+    it("should accept valid plan data", () => {
+      const valid = {
+        title: "Wisuda Sarjana 2026",
+        description: "Rencana biaya wisuda",
+        targetDate: "2026-11-20",
+        targetBudget: 5000000,
+        status: "PLANNING",
+      };
+      expect(planSchema.safeParse(valid).success).toBe(true);
+    });
+
+    it("should reject plan with empty title", () => {
+      const invalid = {
+        title: "A",
+      };
+      expect(planSchema.safeParse(invalid).success).toBe(false);
+    });
+
+    it("should accept valid plan item data", () => {
+      const valid = {
+        planId: "plan-123",
+        title: "Sewa Kebaya & Jas",
+        category: "Busana & Makeup",
+        estimated: 350000,
+        actual: 100000,
+        status: "PARTIAL",
+      };
+      expect(planItemSchema.safeParse(valid).success).toBe(true);
+    });
+
+    it("should reject plan item with negative or zero estimated cost", () => {
+      const invalid = {
+        planId: "plan-123",
+        title: "Sewa Jas",
+        estimated: 0,
+      };
+      expect(planItemSchema.safeParse(invalid).success).toBe(false);
     });
   });
 });

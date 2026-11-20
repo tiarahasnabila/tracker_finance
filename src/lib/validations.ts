@@ -64,6 +64,24 @@ export const budgetSchema = z.object({
     .positive("Batas anggaran harus lebih besar dari 0"),
 });
 
+export const planSchema = z.object({
+  title: z.string().min(2, "Judul rencana minimal 2 karakter").max(100, "Judul rencana maksimal 100 karakter"),
+  description: z.string().max(255, "Deskripsi maksimal 255 karakter").optional().nullable(),
+  targetDate: z.string().optional().nullable(),
+  targetBudget: z.number().nonnegative("Target anggaran tidak boleh negatif").optional().nullable(),
+  status: z.enum(["PLANNING", "ONGOING", "COMPLETED"]).default("PLANNING"),
+});
+
+export const planItemSchema = z.object({
+  planId: z.string().min(1, "ID Rencana wajib diisi"),
+  title: z.string().min(2, "Nama kebutuhan minimal 2 karakter").max(100, "Nama kebutuhan maksimal 100 karakter"),
+  category: z.string().max(50, "Kategori maksimal 50 karakter").optional().nullable(),
+  estimated: z.number().positive("Estimasi biaya harus lebih dari 0"),
+  actual: z.number().nonnegative("Nominal terbayar tidak boleh negatif").default(0),
+  status: z.enum(["UNPAID", "PARTIAL", "PAID"]).default("UNPAID"),
+  notes: z.string().max(255, "Catatan maksimal 255 karakter").optional().nullable(),
+});
+
 export type RegisterInput = z.infer<typeof registerSchema>;
 export type LoginInput = z.infer<typeof loginSchema>;
 export type ProfileInput = z.infer<typeof profileSchema>;
@@ -71,3 +89,5 @@ export type ChangePasswordInput = z.infer<typeof changePasswordSchema>;
 export type TransactionInput = z.infer<typeof transactionSchema>;
 export type CategoryInput = z.infer<typeof categorySchema>;
 export type BudgetInput = z.infer<typeof budgetSchema>;
+export type PlanInput = z.infer<typeof planSchema>;
+export type PlanItemInput = z.infer<typeof planItemSchema>;

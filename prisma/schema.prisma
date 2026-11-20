@@ -29,6 +29,7 @@ model User {
   categories   Category[]
   transactions Transaction[]
   budgets      Budget[]
+  plans        Plan[]
 
   @@map("users")
 }
@@ -101,4 +102,50 @@ model Budget {
   @@unique([userId, categoryId, month, year])
   @@index([userId, month, year])
   @@map("budgets")
+}
+
+enum PlanStatus {
+  PLANNING
+  ONGOING
+  COMPLETED
+}
+
+enum PlanItemStatus {
+  UNPAID
+  PARTIAL
+  PAID
+}
+
+model Plan {
+  id           String      @id @default(cuid())
+  userId       String
+  user         User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title        String
+  description  String?
+  targetDate   DateTime?
+  status       PlanStatus  @default(PLANNING)
+  targetBudget Decimal?    @db.Decimal(14, 2)
+  items        PlanItem[]
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+
+  @@index([userId])
+  @@map("plans")
+}
+
+model PlanItem {
+  id        String         @id @default(cuid())
+  planId    String
+  plan      Plan           @relation(fields: [planId], references: [id], onDelete: Cascade)
+  title     String
+  category  String?
+  estimated Decimal        @db.Decimal(14, 2)
+  actual    Decimal        @default(0) @db.Decimal(14, 2)
+  status    PlanItemStatus @default(UNPAID)
+  notes     String?
+  createdAt DateTime       @default(now())
+  updatedAt DateTime       @updatedAt
+
+  @@index([planId])
+  @@map("plan_items")
 }

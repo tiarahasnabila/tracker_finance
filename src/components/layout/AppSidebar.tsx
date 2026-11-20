@@ -18,6 +18,7 @@ import {
   ChevronRight,
   PanelLeftClose,
   Sparkles,
+  ClipboardList,
 } from "lucide-react";
 import { logoutAction } from "@/app/actions/authActions";
 import { useSidebar } from "./SidebarContext";
@@ -35,6 +36,7 @@ const navItems = [
   { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
   { name: "Transaksi", href: "/transactions", icon: ArrowLeftRight },
   { name: "Anggaran", href: "/budgets", icon: PieChart },
+  { name: "Rencana Biaya", href: "/plans", icon: ClipboardList },
   { name: "Cek Impulsif AI", href: "/anti-impulse", icon: Sparkles, badge: "AI" },
   { name: "Kategori", href: "/categories", icon: Tags },
   { name: "Laporan", href: "/reports", icon: FileBarChart },
